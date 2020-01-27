@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import ProgressBar from 'react-bootstrap/ProgressBar'
+import Slider from '@material-ui/core/Slider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faCaretLeft, faCaretRight, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons'
 import { Canvas, useThree, useFrame } from 'react-three-fiber';
@@ -14,6 +15,8 @@ import './index.css';
 const THREE = require('three');
 // const d3 = require('d3');
 
+// controls
+const defaultSpeed = 1000;
 // camera settings
 const fov = 30;
 const near = 20;
@@ -209,7 +212,8 @@ const Scene = ({
 
 const App = () => {
   const eaData = useEAData('filepath');
-  const [ speed, setSpeed ] = useState(1000);
+  const n = eaData.n;
+  const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
   const [ play, setPlay ] = useState(false);
   const [ hoverData, setHoverData] = useState('');
@@ -222,12 +226,28 @@ const App = () => {
     pointsData: getRandomColors()
   }), [ time ]);
 
-  const playFunc = useCallback(() => {
-    setTime(t => t+1);
-    if ( play ) {
+  const playRef = useRef();
+  playRef.current = { n, time, speed, play };
+
+  const playFunc = () => {
+    const { n, time, speed, play } = playRef.current;
+    if ( (time < (n-1)) & play ) {
+      setTime(time + 1);
       setTimeout(playFunc, speed);
+    } else {
+      setPlay(false);
     }
-  }, [ speed, play ]);
+  };
+
+  const tooglePlay = () => {
+    const { speed, play } = playRef.current;
+    if ( !play ) {
+      setPlay(true);
+      setTimeout(playFunc, speed);
+    } else {
+      setPlay(false);
+    }
+  };
 
   return (
     <div style={{height: '100%'}}>
@@ -249,51 +269,62 @@ const App = () => {
         <ProgressBar
           animated={play}
           min={0}
-          max={100}
+          max={n-1}
           now={time}
-          label={`${time}/100`}
+          label={`${time}/${n-1}`}
         />
-        <div className='button-container row justify-content-center'>
-          <button
-            type='button'
-            className='btn btn-default'
-            onClick={() => setTime(0)}
-          >
-            <FontAwesomeIcon icon={faStepBackward} />
-          </button>
-          <button
-            type='button'
-            className='btn btn-default'
-            onClick={() => setTime(d => Math.max(d-1, 0) )}
-          >
-            <FontAwesomeIcon icon={faCaretLeft} />
-          </button>
-          <button
-            type='button'
-            className='btn btn-default'
-            onClick={ () => setPlay(d => {
-              if ( !d ) {
-                setTimeout(playFunc, speed);
-              }
-              return !d;
-            }) }
-          >
-            <FontAwesomeIcon icon={play ? faPause : faPlay} />
-          </button>
-          <button
-            type='button'
-            className='btn btn-default'
-            onClick={() => setTime(d => Math.min(d+1, 100) )}
-          >
-            <FontAwesomeIcon icon={faCaretRight} />
-          </button>
-          <button
-            type='button'
-            className='btn btn-default'
-            onClick={() => setTime(100)}
-          >
-            <FontAwesomeIcon icon={faStepForward} />
-          </button>
+        <div className='controllers row justify-content-center'>
+          <div className='button-container'>
+            <button
+              type='button'
+              className='btn btn-default'
+              onClick={() => setTime(0)}
+            >
+              <FontAwesomeIcon icon={faStepBackward} />
+            </button>
+            <button
+              type='button'
+              className='btn btn-default'
+              onClick={() => setTime(d => Math.max(d-1, 0) )}
+            >
+              <FontAwesomeIcon icon={faCaretLeft} />
+            </button>
+            <button
+              type='button'
+              className='btn btn-default'
+              onClick={tooglePlay}
+            >
+              <FontAwesomeIcon icon={play ? faPause : faPlay} />
+            </button>
+            <button
+              type='button'
+              className='btn btn-default'
+              onClick={() => setTime(d => Math.min(d+1, n-1) )}
+            >
+              <FontAwesomeIcon icon={faCaretRight} />
+            </button>
+            <button
+              type='button'
+              className='btn btn-default'
+              onClick={() => setTime(n-1)}
+            >
+              <FontAwesomeIcon icon={faStepForward} />
+            </button>
+          </div>
+          <div className='speed-controller row'>
+            <span className='col'>Speed</span>
+            <Slider
+              className='slider col'
+              defaultValue={defaultSpeed}
+              getAriaValueText={d => d}
+              valueLabelDisplay='auto'
+              min={0}
+              max={5000}
+              step={100}
+              marks
+              onChange={(e,value) => setSpeed(value) }
+            />
+          </div>
         </div>
         <div className='git-info row justify-content-right'>
           <a href='https://github.com/renato145/show_evolution'>Source code</a>

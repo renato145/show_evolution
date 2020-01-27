@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 
 export const useEAData = url => ( 
   useMemo(() => {
-      return url;
+      return {
+        n: 10
+      };
   }, [ url ])
 );
