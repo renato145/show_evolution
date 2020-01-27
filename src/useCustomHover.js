@@ -30,7 +30,7 @@ export const useCustomHover = ({
     } else {
       onPointOut();
     }
-  }, [ size ]);
+  }, [ size, onPointHover ]);
 
   useEffect(() => {
     const view = select(renderer.domElement);
@@ -39,6 +39,5 @@ export const useCustomHover = ({
     });
   }, [ renderer, mouse, checkIntersects ]);
 
-  // const checkIntersects = position => {
 };
 

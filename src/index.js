@@ -81,7 +81,7 @@ const Scene = ({ points, colors, pointsData, setHoverData }) => {
       left: x,
       size
     }));
-  }, [ points, size ]);
+  }, [ points, size, pointsData, colors ]);
 
   const onPointOut = () => {
     highlightPoint.show = false;
