@@ -258,6 +258,15 @@ const App = () => {
     }
   };
 
+  // Playback keys
+  useEffect(() => {
+    document.addEventListener('keydown', e => {
+      if(e.code==='Space'){
+        tooglePlay();
+      }
+    });
+  }, [])
+
   return (
     <div style={{height: '100%'}}>
       <div className='canvas-container h-100'>

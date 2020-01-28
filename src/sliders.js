@@ -80,7 +80,7 @@ export const SpeedBar = ({ min, max, defaultValue, onChange }) => {
   return (
     <div className='row justify-content-center'>
       <SpeedSlider
-        className='col-4'
+        className='col-3'
         defaultValue={defaultValue}
         valueLabelFormat={d => `${d} ms`}
         valueLabelDisplay='on'
