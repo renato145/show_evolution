@@ -226,15 +226,24 @@ const App = () => {
   }), [ time ]);
 
   const playRef = useRef();
+  const [ playCb, setPlayCb ] = useState(null)
   playRef.current = { n, time, speed, play };
+  
+  const removeTimeout = () => {
+    if ( playCb ) {
+      clearTimeout(playCb);
+      setPlayCb(null);
+    }
+  };
 
   const playFunc = () => {
     const { n, time, speed, play } = playRef.current;
     if ( (time < (n-1)) & play ) {
       setTime(time + 1);
-      setTimeout(playFunc, speed);
+      setPlayCb(setTimeout(playFunc, speed));
     } else {
       setPlay(false);
+      removeTimeout();
     }
   };
 
@@ -242,9 +251,10 @@ const App = () => {
     const { speed, play } = playRef.current;
     if ( !play ) {
       setPlay(true);
-      setTimeout(playFunc, speed);
+      setPlayCb(setTimeout(playFunc, speed));
     } else {
       setPlay(false);
+      removeTimeout();
     }
   };
 
