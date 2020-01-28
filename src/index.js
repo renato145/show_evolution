@@ -1,8 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import ProgressBar from 'react-bootstrap/ProgressBar'
-import Slider from '@material-ui/core/Slider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faCaretLeft, faCaretRight, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons'
 import { Canvas, useThree, useFrame } from 'react-three-fiber';
@@ -11,6 +9,7 @@ import { HoverDescription } from './HoverDescription';
 import { d3Controls } from './d3Controls';
 import { useCustomHover } from './useCustomHover';
 import { useEAData } from './useEAData';
+import { ProgressBar, SpeedBar } from './sliders';
 import './index.css';
 const THREE = require('three');
 // const d3 = require('d3');
@@ -267,11 +266,11 @@ const App = () => {
         </Canvas>
         {hoverData}
         <ProgressBar
-          animated={play}
           min={0}
           max={n-1}
           now={time}
-          label={`${time}/${n-1}`}
+          label={`${time}/${n-1} gen`}
+          onChange={(e,value) => setTime(value) }
         />
         <div className='controllers row justify-content-center'>
           <div className='button-container'>
@@ -311,22 +310,14 @@ const App = () => {
               <FontAwesomeIcon icon={faStepForward} />
             </button>
           </div>
-          <div className='speed-controller row'>
-            <span className='col'>Speed</span>
-            <Slider
-              className='slider col'
-              defaultValue={defaultSpeed}
-              getAriaValueText={d => d}
-              valueLabelDisplay='auto'
-              min={0}
-              max={5000}
-              step={100}
-              marks
-              onChange={(e,value) => setSpeed(value) }
-            />
-          </div>
         </div>
-        <div className='git-info row justify-content-right'>
+        <SpeedBar
+          min={100}
+          max={5000}
+          defaultValue={1000}
+          onChange={(e,value) => setSpeed(value)}
+        />
+        <div className='git-info row justify-content-end'>
           <a href='https://github.com/renato145/show_evolution'>Source code</a>
         </div>
       </div>

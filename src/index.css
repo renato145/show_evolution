@@ -15,8 +15,7 @@ html, body, #root {
 }
 
 .canvas-container {
-  /* padding-bottom: 75px; */
-  padding-bottom: 275px;
+  padding-bottom: 115px;
 }
 
 .controllers {
@@ -24,10 +23,6 @@ html, body, #root {
 }
 
 .speed-controller {
-}
-
-.slider {
-  width: 200px !important;
 }
 
 .progressbar {
@@ -56,6 +51,7 @@ html, body, #root {
 .git-info {
   font-family: 'Courier New', Courier, monospace;
   vertical-align: middle;
-  font-size: 1.2em;
-  padding-left: 2em;
+  font-size: 0.9em;
+  padding-top: 5;
+  padding-right: 2em;
 }
