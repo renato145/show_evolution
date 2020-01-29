@@ -1,6 +1,6 @@
 import React from 'react';
 
-const hoverWidth = 150;
+const hoverWidth = 200;
 
 export const HoverDescription = ({ description, top, left, size }) => {
   const showLeft = (left+hoverWidth) > size.width

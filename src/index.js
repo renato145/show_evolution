@@ -18,42 +18,20 @@ const THREE = require('three');
 const defaultSpeed = 1000;
 // camera settings
 const fov = 30;
-const near = 20;
+const near = 1;
 const far = 150;
 const defaultCameraZoom = 100;
 // canvas settings
 const backgroundColor = new THREE.Color(0xefefef);
-// points generation
-const nPoints = 100;
-const randomScale = 50;
-const pointsSize = 15;
-const highlightPointSize = 40;
-const colors = ['#ffd700', '#ffb14e', '#fa8775', '#ea5f94', '#cd34b5', '#9d02d7', '#0000ff'];
+// points settings
+const pointsSize = 10;
+const highlightPointSize = 25;
 const sprite = new THREE.TextureLoader().load('textures/discNoShadow.png');
-
-const getRandomNumber = () => (Math.random()-0.5)*randomScale;
-
-const getRandomPoints = () => {
-  let positions = []
-  Array(nPoints).fill().forEach(() => {
-    positions.push(getRandomNumber(), getRandomNumber(), 0);
-  });
-  return positions;
-};
-
-const getRandomColor = () => new THREE.Color(colors[parseInt(Math.random() * colors.length)]);
-const getRandomColors = () => {
-  let colors = []
-  Array(nPoints).fill().forEach(() => {
-    const {r,g,b} = getRandomColor();
-    colors.push(r,g,b);
-  });
-  return colors;
-};
 
 const Scene = ({
   data: { points, colors, pointsData },
-  setHoverData
+  setHoverData,
+  nPoints
 }) => {
   const { scene, aspect, gl, camera, size, mouse } = useThree();
   const ref = useRef();
@@ -84,7 +62,7 @@ const Scene = ({
     // hover description
     const pointColor = colors.slice(index*3, (index+1)*3).map(d => d.toFixed(2));
     setHoverData(HoverDescription({
-      description: `mouse over: ${pointsData[index]}\nColor: rgb(${pointColor})`,
+      description: pointsData[index],
       top: y,
       left: x,
       size
@@ -210,19 +188,16 @@ const Scene = ({
 };
 
 const App = () => {
-  const eaData = useEAData('filepath');
-  const n = eaData.n;
+  const eaData = useEAData();
+  const { n, nPoints } = eaData;
   const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
   const [ play, setPlay ] = useState(false);
   const [ hoverData, setHoverData] = useState('');
   const data = useMemo(() => ({
-    // points: eaData.points[time],
-    // colors: eaData.colors[time],
-    // pointsData: eaData.pointsData[time]
-    points: getRandomPoints(),
-    colors: getRandomColors(),
-    pointsData: getRandomColors()
+    points: eaData.points[time],
+    colors: eaData.colors[time],
+    pointsData: eaData.pointsData[time],
   }), [ time ]);
 
   const playRef = useRef();
@@ -281,6 +256,7 @@ const App = () => {
           <Scene
             data={data}
             setHoverData={setHoverData}
+            nPoints={nPoints}
           />
         </Canvas>
         {hoverData}
