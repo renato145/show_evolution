@@ -76,7 +76,7 @@ export const ProgressBar = ({ min, max, now, label, onChange }) => {
   );
 };
 
-export const SpeedBar = ({ min, max, defaultValue, onChange }) => {
+export const SpeedBar = ({ min, max, step, defaultValue, onChange }) => {
   return (
     <div className='row justify-content-center'>
       <SpeedSlider
@@ -87,7 +87,7 @@ export const SpeedBar = ({ min, max, defaultValue, onChange }) => {
         aria-label='pretto slider'
         min={min}
         max={max}
-        step={100}
+        step={step}
         onChange={onChange}
         track={false}
       />

@@ -15,7 +15,7 @@ const THREE = require('three');
 // const d3 = require('d3');
 
 // controls
-const defaultSpeed = 1000;
+const defaultSpeed = 250;
 // camera settings
 const fov = 30;
 const near = 1;
@@ -307,9 +307,10 @@ const App = () => {
           </div>
         </div>
         <SpeedBar
-          min={100}
-          max={5000}
-          defaultValue={1000}
+          min={25}
+          max={2500}
+          step={25}
+          defaultValue={defaultSpeed}
           onChange={(e,value) => setSpeed(value)}
         />
         <div className='git-info row justify-content-end'>

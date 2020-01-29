@@ -41,6 +41,7 @@ export const useEAData = () => (
        Fitness value: ${point.fitness_value.toFixed(2)}
        Constraints sum: ${point.constraints_sum.toFixed(2)}
        Feasible: ${point.is_feasible}
+       Time: ${point.time}
        `
     )));
 
