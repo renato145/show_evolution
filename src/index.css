@@ -18,6 +18,18 @@ html, body, #root {
   padding-bottom: 115px;
 }
 
+.time-dialog {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  z-index: 100;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 1.3em;
+  padding-left: 1em;
+  padding-top: 0.2em;
+  white-space: pre-line;
+}
+
 .controllers {
 
 }

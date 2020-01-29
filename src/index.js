@@ -189,7 +189,7 @@ const Scene = ({
 
 const App = () => {
   const eaData = useEAData();
-  const { n, nPoints } = eaData;
+  const { n, nPoints, maxTime } = eaData;
   const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
   const [ play, setPlay ] = useState(false);
@@ -198,6 +198,7 @@ const App = () => {
     points: eaData.points[time],
     colors: eaData.colors[time],
     pointsData: eaData.pointsData[time],
+    thisTime: eaData.times[time]
   }), [ time ]);
 
   const playRef = useRef();
@@ -245,6 +246,9 @@ const App = () => {
   return (
     <div style={{height: '100%'}}>
       <div className='canvas-container h-100'>
+        <div className='time-dialog'>
+          {`Time\n${data.thisTime}/${maxTime}`}
+        </div>
         <Canvas
           camera={{
             fov: fov,
