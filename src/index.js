@@ -10,6 +10,7 @@ import { d3Controls } from './d3Controls';
 import { useCustomHover } from './useCustomHover';
 import { useEAData } from './useEAData';
 import { ProgressBar, SpeedBar } from './sliders';
+import { FileUpload } from './FileUpload';
 import './index.css';
 const THREE = require('three');
 // const d3 = require('d3');
@@ -244,10 +245,15 @@ const App = () => {
   }, [])
 
   return (
-    <div style={{height: '100%'}}>
-      <div className='canvas-container h-100'>
+    <div className='main-container'>
+      <div>
+        <FileUpload
+          setContent={e => console.log(e)}
+        />
+      </div>
+      <div className='canvas-container'>
         <div className='time-dialog'>
-          {`Time\n${data.thisTime}/${maxTime}`}
+          {`Time: ${data.thisTime}/${maxTime}`}
         </div>
         <Canvas
           camera={{
@@ -264,6 +270,8 @@ const App = () => {
           />
         </Canvas>
         {hoverData}
+      </div>
+      <div className='html-bottom-container'>
         <ProgressBar
           min={0}
           max={n-1}

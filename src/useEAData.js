@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { scaleLinear, max } from 'd3';
+import { scaleLinear, max, json } from 'd3';
 import eaData from './data/ea_data.json';
 const THREE = require('three');
 
@@ -35,6 +35,9 @@ const computeColors = data => {
 
 export const useEAData = () => ( 
   useMemo(() => {
+    // json('/data/ea_data.json').then( d => {
+    //   console.log(d);
+    // });
     const { data, limits } = eaData;
     const n = data.length;
     const nPoints = Object.keys(data[0]).length;
