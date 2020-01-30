@@ -11,6 +11,7 @@ import { useCustomHover } from './useCustomHover';
 import { useEAData } from './useEAData';
 import { ProgressBar, SpeedBar } from './sliders';
 import { FileUpload } from './FileUpload';
+import { scaleLinear } from 'd3';
 import './index.css';
 const THREE = require('three');
 // const d3 = require('d3');
@@ -28,6 +29,8 @@ const backgroundColor = new THREE.Color(0xefefef);
 const pointsSize = 10;
 const highlightPointSize = 25;
 const sprite = new THREE.TextureLoader().load('textures/discNoShadow.png');
+// zoom threadhold scale
+const zoomThScale = scaleLinear().domain([near,far]).range([0.008,1]);
 
 const Scene = ({
   data: { points, colors, pointsData },
@@ -74,7 +77,7 @@ const Scene = ({
     setHoverData('');
   };
 
-  useCustomHover({ renderer: gl, mouse, camera, size, pointsRef, onPointHover, onPointOut });
+  const raycaster = useCustomHover({ renderer: gl, mouse, camera, size, pointsRef, onPointHover, onPointOut });
 
   // Initialize arrays
   const positionsArray = useMemo(() => new Float32Array(nPoints*3), []);
@@ -107,6 +110,7 @@ const Scene = ({
     })
     geometryRef.current.attributes.position.needsUpdate = true;
     geometryRef.current.attributes.color.needsUpdate = true;
+    raycaster.params.Points.threshold = zoomThScale(camera.position.z);
   });
 
   useEffect(() => {

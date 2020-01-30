@@ -39,5 +39,6 @@ export const useCustomHover = ({
     });
   }, [ renderer, mouse, checkIntersects ]);
 
+  return raycaster;
 };
 
