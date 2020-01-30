@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 
-export const FileUpload = ({ setContent }) => { 
+export const FileUpload = ({ className, setContent }) => { 
+  const ref = useRef();
   const reader = useMemo(() => {
     const fr = new FileReader();
     fr.onload = e => {
@@ -9,11 +10,22 @@ export const FileUpload = ({ setContent }) => {
     return fr;
   }, []);
   return (
-    <input
-      type='file'
-      name='file'
-      onChange={e => {
-        reader.readAsText(e.target.files[0]);
-      }}/>
+    <div className={className}>
+      <input
+        ref={ref}
+        type='file'
+        style={{display: 'none'}}
+        accept='.json'
+        onChange={e => {
+          reader.readAsText(e.target.files[0]);
+        }}
+      />
+      <button
+        className='btn btn-outline-secondary btn-sm'
+        onClick={() => ref.current.click()}
+      >
+        Upload File
+      </button>
+    </div>
   );
  };

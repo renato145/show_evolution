@@ -61,7 +61,6 @@ const Scene = ({
     highlightRef.current.attributes.color.needsUpdate = true;
 
     // hover description
-    const pointColor = colors.slice(index*3, (index+1)*3).map(d => d.toFixed(2));
     setHoverData(HoverDescription({
       description: pointsData[index],
       top: y,
@@ -189,7 +188,8 @@ const Scene = ({
 };
 
 const App = () => {
-  const eaData = useEAData();
+  const [ fileData, setFileData ] = useState(null);
+  const eaData = useEAData(fileData);
   const { n, nPoints, maxTime } = eaData;
   const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
@@ -200,7 +200,7 @@ const App = () => {
     colors: eaData.colors[time],
     pointsData: eaData.pointsData[time],
     thisTime: eaData.times[time]
-  }), [ time ]);
+  }), [ time, eaData ]);
 
   const playRef = useRef();
   const [ playCb, setPlayCb ] = useState(null)
@@ -246,11 +246,6 @@ const App = () => {
 
   return (
     <div className='main-container'>
-      <div>
-        <FileUpload
-          setContent={e => console.log(e)}
-        />
-      </div>
       <div className='canvas-container'>
         <div className='time-dialog'>
           {`Time: ${data.thisTime}/${maxTime}`}
@@ -324,6 +319,10 @@ const App = () => {
           step={25}
           defaultValue={defaultSpeed}
           onChange={(e,value) => setSpeed(value)}
+        />
+        <FileUpload
+          className='file-upload offset-1'
+          setContent={d => setFileData(d)}
         />
         <div className='git-info row justify-content-end'>
           <a href='https://github.com/renato145/show_evolution'>Source code</a>

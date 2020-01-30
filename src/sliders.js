@@ -78,7 +78,7 @@ export const ProgressBar = ({ min, max, now, label, onChange }) => {
 
 export const SpeedBar = ({ min, max, step, defaultValue, onChange }) => {
   return (
-    <div className='row justify-content-center'>
+    <div className='row justify-content-center speed-slider'>
       <SpeedSlider
         className='col-3'
         defaultValue={defaultValue}

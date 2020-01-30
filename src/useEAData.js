@@ -33,12 +33,10 @@ const computeColors = data => {
   return colors;
 };
 
-export const useEAData = () => ( 
+export const useEAData = ( fileData ) => ( 
   useMemo(() => {
-    // json('/data/ea_data.json').then( d => {
-    //   console.log(d);
-    // });
-    const { data, limits } = eaData;
+    const sourceData = fileData ? fileData : eaData;
+    const { data, limits } = sourceData;
     const n = data.length;
     const nPoints = Object.keys(data[0]).length;
     const times = data.map(d => d[0].time);
@@ -57,5 +55,5 @@ export const useEAData = () => (
     )));
 
     return { n, nPoints, times, maxTime, points, colors, pointsData };
-  }, [])
+  }, [ fileData ])
 );

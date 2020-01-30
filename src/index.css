@@ -24,6 +24,10 @@ html, body, #root {
   flex-grow: 1;
 }
 
+.file-upload {
+  /* position: absolute; */
+}
+
 .time-dialog {
   position: absolute;
   z-index: 100;
@@ -43,7 +47,8 @@ html, body, #root {
 
 }
 
-.speed-controller {
+.speed-slider {
+  padding-bottom: 10px;
 }
 
 .progressbar {
