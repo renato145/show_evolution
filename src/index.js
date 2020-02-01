@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faCaretLeft, faCaretRight, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons'
 import { Canvas, useThree, useFrame } from 'react-three-fiber';
-import { useSpring } from 'react-spring-three';
+import { useSpring } from 'react-spring/three';
 import { HoverDescription } from './HoverDescription';
 import { d3Controls } from './d3Controls';
 import { useCustomHover } from './useCustomHover';
