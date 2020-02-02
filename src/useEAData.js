@@ -42,7 +42,7 @@ export const useEAData = ( fileData ) => (
     const times = data.map(d => d[0].time);
     const maxTime = max(times);
     const scale = scaleLinear().domain(limits).range([-pointsScale,pointsScale]);
-    const points = data.map(d => d.map(point => [...point.data.map(scale),0]).flat());
+    const points = data.map(d => d.map(point => [...point.data.map(scale),0]));
     const colors = data.map(computeColors);
 
     const pointsData = data.map(d => d.map( point => (
