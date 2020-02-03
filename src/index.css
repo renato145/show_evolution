@@ -39,10 +39,6 @@ html, body, #root {
   white-space: pre-line;
 }
 
-.speed-slider {
-  padding-bottom: 10px;
-}
-
 .hover-description {
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;

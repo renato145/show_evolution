@@ -33,7 +33,7 @@ const ProgressBarSlider = withStyles({
   },
 })(Slider);
 
-const SpeedSlider = withStyles({
+const BaseSlider = withStyles({
   root: {
     color: '#8f8f8f',
   },
@@ -76,21 +76,19 @@ export const ProgressBar = ({ min, max, now, label, onChange }) => {
   );
 };
 
-export const SpeedBar = ({ min, max, step, defaultValue, onChange }) => {
+export const GeneralSlider = ({ min, max, step, defaultValue, valueLabelFormat, onChange, className }) => {
   return (
-    <div className='row justify-content-center speed-slider'>
-      <SpeedSlider
-        className='col-3'
-        defaultValue={defaultValue}
-        valueLabelFormat={d => `${d} ms`}
-        valueLabelDisplay='on'
-        aria-label='pretto slider'
-        min={min}
-        max={max}
-        step={step}
-        onChange={onChange}
-        track={false}
-      />
-    </div>
+    <BaseSlider
+      className={className}
+      defaultValue={defaultValue}
+      valueLabelFormat={valueLabelFormat}
+      valueLabelDisplay='on'
+      aria-label='pretto slider'
+      min={min}
+      max={max}
+      step={step}
+      onChange={onChange}
+      track={false}
+    />
   );
 };

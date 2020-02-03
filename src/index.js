@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useEAData } from './useEAData';
-import { ProgressBar, SpeedBar } from './sliders';
+import { ProgressBar, GeneralSlider } from './sliders';
 import { FileUpload } from './FileUpload';
 import './index.css';
 import { PlayerControl } from './PlayerControl';
@@ -44,20 +44,27 @@ const App = () => {
           onChange={(e,value) => setTime(value) }
         />
         <PlayerControl {...{ n, setTime, time, speed }} />
-        <SpeedBar
-          min={25}
-          max={2500}
-          step={25}
-          defaultValue={defaultSpeed}
-          onChange={(e,value) => setSpeed(value)}
-        />
-        <SpeedBar
-          min={0.5}
-          max={5}
-          step={0.25}
-          defaultValue={defaultSphereSize}
-          onChange={(e,value) => setSphereSize(value)}
-        />
+        <div className='row'>
+          <GeneralSlider
+            className={'col-4 offset-4'}
+            min={25}
+            max={2500}
+            step={25}
+            valueLabelFormat={d => `${d} ms`}
+            unit={'ms'}
+            defaultValue={defaultSpeed}
+            onChange={(e,value) => setSpeed(value)}
+          />
+          <GeneralSlider
+            className={'col-1 offset-1'}
+            min={0.25}
+            max={5}
+            step={0.25}
+            valueLabelFormat={d => `${d.toFixed(2)} sz`}
+            defaultValue={defaultSphereSize}
+            onChange={(e,value) => setSphereSize(value)}
+          />
+        </div>
         <FileUpload
           className='row file-upload offset-1'
           setContent={setFileData}
