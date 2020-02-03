@@ -1,6 +1,7 @@
 // From https://observablehq.com/@grantcuster/using-three-js-for-2d-data-visualization
 import { zoom, event, select, zoomIdentity } from 'd3';
 import { useThree } from 'react-three-fiber';
+import { useEffect } from 'react';
 
 const toRadians = angle => (angle * (Math.PI/180));
 
@@ -32,8 +33,11 @@ export const useD3Controls = ({ fov, near, far, defaultCameraZoom }) => {
   const initialTransform = zoomIdentity
     .translate(width/2, height/2)
     .scale(initialScale);    
-  threeZoom.transform(view, initialTransform);
-  camera.position.set(0, 0, defaultCameraZoom);
+
+  useEffect(() => {
+    threeZoom.transform(view, initialTransform);
+    camera.position.set(0, 0, defaultCameraZoom);
+  }, [ camera ]);
 
   // Double click resets camera
   view.on('dblclick.zoom', () => {

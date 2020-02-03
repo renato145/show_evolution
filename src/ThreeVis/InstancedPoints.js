@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { useThree } from 'react-three-fiber';
 import { useSpring } from 'react-spring/three';
 import { useD3Controls } from './useD3Controls';
@@ -10,12 +10,12 @@ const backgroundColor = new THREE.Color(0xefefef);
 // re-use for instance computations
 const scratchObject3D = new THREE.Object3D();
 
-const updateInstancedMeshMatrices = ({ mesh, points, colors, colorAttrib, colorArray }) => {
+const updateInstancedMeshMatrices = ({ aspect, mesh, points, colors, colorAttrib, colorArray }) => {
   if (!mesh) return;
 
   [...Array(points.length/3)].fill(0).forEach((d,i) => {
-    const position = points.slice(i*3,(i+1)*3);
-    scratchObject3D.position.set(...position);
+    const [ x, y, z ] = points.slice(i*3,(i+1)*3);
+    scratchObject3D.position.set(x*aspect, y, z);
     scratchObject3D.updateMatrix();
     mesh.setMatrixAt(i, scratchObject3D.matrix);
   });
@@ -36,11 +36,11 @@ const useAnimatedLayout = ({ points, colors, onFrame }) => {
 };
 
 export const InstancedPoints = ({
-  data, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom
+  data, sphereSize, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom
 }) => {
   const meshRef = useRef();
   const colorRef = useRef();
-  const { scene } = useThree();
+  const { scene, aspect } = useThree();
   const { points, colors, pointsData } = data;
   const colorArray = useMemo(() => new Float32Array(nPoints*3), [ nPoints ]);
 
@@ -57,7 +57,14 @@ export const InstancedPoints = ({
     points,
     colors,
     onFrame: ({ points, colors }) => {
-      updateInstancedMeshMatrices({ mesh: meshRef.current, points, colors, colorAttrib: colorRef.current, colorArray });
+      updateInstancedMeshMatrices({
+        aspect,
+        mesh: meshRef.current,
+        points,
+        colors,
+        colorAttrib: colorRef.current,
+        colorArray,
+      });
     },
   });
 
@@ -72,7 +79,7 @@ export const InstancedPoints = ({
       onClick={handleClick}
       onPointerDown={handlePointerDown}
     >
-      <sphereBufferGeometry attach='geometry' args={[0.5, 0.5, 0.15, 32]}>
+      <sphereBufferGeometry attach='geometry' args={[sphereSize, 8, 16]} >
         <instancedBufferAttribute
           ref={colorRef}
           attachObject={['attributes', 'color']}

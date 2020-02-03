@@ -10,11 +10,13 @@ import { ThreeVis } from './ThreeVis/ThreeVis';
 
 // controls
 const defaultSpeed = 250;
+const defaultSphereSize = 0.5
 
 const App = () => {
   const [ fileData, setFileData ] = useState(null);
   const eaData = useEAData(fileData);
   const { n, nPoints, maxTime } = eaData;
+  const [ sphereSize, setSphereSize ] = useState(defaultSphereSize);
   const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
   const [selectedPoint, setSelectedPoint] = React.useState(null);
@@ -31,7 +33,7 @@ const App = () => {
         <div className='time-dialog'>
           {`Time: ${data.thisTime}/${maxTime}`}
         </div>
-        <ThreeVis {...{data, selectedPoint, setSelectedPoint, nPoints}} />
+        <ThreeVis {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints}} />
       </div>
       <div className='html-bottom-container'>
         <ProgressBar
@@ -49,9 +51,16 @@ const App = () => {
           defaultValue={defaultSpeed}
           onChange={(e,value) => setSpeed(value)}
         />
+        <SpeedBar
+          min={0.1}
+          max={2}
+          step={0.1}
+          defaultValue={defaultSphereSize}
+          onChange={(e,value) => setSphereSize(value)}
+        />
         <FileUpload
-          className='file-upload offset-1'
-          setContent={d => setFileData(d)}
+          className='row file-upload offset-1'
+          setContent={setFileData}
         />
         <div className='git-info row justify-content-end'>
           <a href='https://github.com/renato145/show_evolution'>Source code</a>
