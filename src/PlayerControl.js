@@ -5,7 +5,8 @@ import { faPlay, faPause, faCaretLeft, faCaretRight, faStepBackward, faStepForwa
 export const PlayerControl = ({ n, setTime, time, speed }) => {
   const [ play, setPlay ] = useState(false);
   const [ playCb, setPlayCb ] = useState(null)
-  const playRef = useRef({ n, time, speed, play });
+  const playRef = useRef();
+  playRef.current = { n, time, speed, play };
   
   const removeTimeout = () => {
     if ( playCb ) {

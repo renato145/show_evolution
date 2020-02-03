@@ -10,7 +10,7 @@ import { ThreeVis } from './ThreeVis/ThreeVis';
 
 // controls
 const defaultSpeed = 250;
-const defaultSphereSize = 0.5
+const defaultSphereSize = 1
 
 const App = () => {
   const [ fileData, setFileData ] = useState(null);
@@ -33,7 +33,7 @@ const App = () => {
         <div className='time-dialog'>
           {`Time: ${data.thisTime}/${maxTime}`}
         </div>
-        <ThreeVis {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints}} />
+        <ThreeVis {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints, speed}} />
       </div>
       <div className='html-bottom-container'>
         <ProgressBar
@@ -52,9 +52,9 @@ const App = () => {
           onChange={(e,value) => setSpeed(value)}
         />
         <SpeedBar
-          min={0.1}
-          max={2}
-          step={0.1}
+          min={0.5}
+          max={5}
+          step={0.25}
           defaultValue={defaultSphereSize}
           onChange={(e,value) => setSphereSize(value)}
         />

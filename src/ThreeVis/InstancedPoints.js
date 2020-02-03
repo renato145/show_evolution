@@ -10,12 +10,13 @@ const backgroundColor = new THREE.Color(0xefefef);
 // re-use for instance computations
 const scratchObject3D = new THREE.Object3D();
 
-const updateInstancedMeshMatrices = ({ aspect, mesh, points, colors, colorAttrib, colorArray }) => {
+const updateInstancedMeshMatrices = ({ sphereSize, aspect, mesh, points, colors, colorAttrib, colorArray }) => {
   if (!mesh) return;
 
   [...Array(points.length/3)].fill(0).forEach((d,i) => {
     const [ x, y, z ] = points.slice(i*3,(i+1)*3);
     scratchObject3D.position.set(x*aspect, y, z);
+    scratchObject3D.scale.setScalar(sphereSize);
     scratchObject3D.updateMatrix();
     mesh.setMatrixAt(i, scratchObject3D.matrix);
   });
@@ -25,18 +26,19 @@ const updateInstancedMeshMatrices = ({ aspect, mesh, points, colors, colorAttrib
   mesh.instanceMatrix.needsUpdate = true;
 };
 
-const useAnimatedLayout = ({ points, colors, onFrame }) => {
+const useAnimatedLayout = ({ points, colors, speed, onFrame }) => {
   useSpring({
     points: points,
     colors: colors,
     onFrame: ({ points, colors }) => {
       onFrame({ points, colors});
     },
+    config: { duration: speed }
   });
 };
 
 export const InstancedPoints = ({
-  data, sphereSize, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom
+  data, sphereSize, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom, speed
 }) => {
   const meshRef = useRef();
   const colorRef = useRef();
@@ -56,8 +58,10 @@ export const InstancedPoints = ({
   useAnimatedLayout({
     points,
     colors,
+    speed,
     onFrame: ({ points, colors }) => {
       updateInstancedMeshMatrices({
+        sphereSize,
         aspect,
         mesh: meshRef.current,
         points,
@@ -79,7 +83,7 @@ export const InstancedPoints = ({
       onClick={handleClick}
       onPointerDown={handlePointerDown}
     >
-      <sphereBufferGeometry attach='geometry' args={[sphereSize, 8, 16]} >
+      <sphereBufferGeometry attach='geometry' args={[0.5, 8, 16]} >
         <instancedBufferAttribute
           ref={colorRef}
           attachObject={['attributes', 'color']}

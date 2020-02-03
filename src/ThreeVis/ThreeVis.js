@@ -9,7 +9,7 @@ const near = 1;
 const far = 150;
 const defaultCameraZoom = 100;
 
-export const ThreeVis = ({ data, sphereSize, selectedPoint, setSelectedPoint, nPoints }) => {
+export const ThreeVis = ({ data, sphereSize, selectedPoint, setSelectedPoint, nPoints, speed }) => {
   return (
     <Canvas
       camera={{
@@ -19,7 +19,9 @@ export const ThreeVis = ({ data, sphereSize, selectedPoint, setSelectedPoint, nP
         position: [0, 0, defaultCameraZoom]
       }}
     >
-      <InstancedPoints {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom }} />
+      <InstancedPoints
+        {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom, speed }}
+      />
     </Canvas>
   );
 };
