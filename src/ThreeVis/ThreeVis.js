@@ -18,7 +18,6 @@ export const ThreeVis = ({ data, selectedPoint, setSelectedPoint, nPoints }) => 
         far: far+1,
         position: [0, 0, defaultCameraZoom]
       }}
-      // background={'hotpink'}
     >
       <InstancedPoints {...{data, selectedPoint, setSelectedPoint, nPoints, fov, near, far, defaultCameraZoom }} />
     </Canvas>
