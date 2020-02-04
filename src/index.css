@@ -40,12 +40,12 @@ html, body, #root {
 }
 
 .hover-description {
-  background-color: rgba(255, 255, 255, 0.5);
-  position: absolute;
+  background-color: rgba(255, 255, 255, 0.75);
+  /* position: absolute; */
   z-index: 100;
-  display: block;
+  /* display: block; */
   padding: 5px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   white-space: pre-line;
 }
 

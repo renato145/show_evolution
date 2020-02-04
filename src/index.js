@@ -19,7 +19,6 @@ const App = () => {
   const [ sphereSize, setSphereSize ] = useState(defaultSphereSize);
   const [ speed, setSpeed ] = useState(defaultSpeed);
   const [ time, setTime ] = useState(0);
-  const [selectedPoint, setSelectedPoint] = React.useState(null);
   const data = useMemo(() => ({
     points: eaData.points[time],
     colors: eaData.colors[time],
@@ -33,7 +32,7 @@ const App = () => {
         <div className='time-dialog'>
           {`Time: ${data.thisTime}/${maxTime}`}
         </div>
-        <ThreeVis {...{data, sphereSize, selectedPoint, setSelectedPoint, nPoints, speed}} />
+        <ThreeVis {...{data, sphereSize, nPoints, speed}} />
       </div>
       <div className='html-bottom-container'>
         <ProgressBar
