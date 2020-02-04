@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { InstancedPoints } from './InstancedPoints';
 const THREE = require('three');
@@ -10,6 +10,8 @@ const far = 150;
 const defaultCameraZoom = 100;
 
 export const ThreeVis = ({ data, sphereSize, nPoints, speed }) => {
+  const [ selectedPoint, setSelectedPoint ] = useState({ show: false, index: 0});
+
   return (
     <Canvas
       camera={{
@@ -18,10 +20,10 @@ export const ThreeVis = ({ data, sphereSize, nPoints, speed }) => {
         far: far+1,
         position: [0, 0, defaultCameraZoom]
       }}
-      // onPointerMissed={e => console.log(e)}
+      onPointerMissed={() => setSelectedPoint({ show:false, index: 0})}
     >
       <InstancedPoints
-        {...{data, sphereSize, nPoints, fov, near, far, defaultCameraZoom, speed }}
+        {...{data, sphereSize, nPoints, fov, near, far, defaultCameraZoom, speed, selectedPoint, setSelectedPoint}}
       />
     </Canvas>
   );

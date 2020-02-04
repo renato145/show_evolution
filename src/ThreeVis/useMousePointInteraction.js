@@ -9,7 +9,7 @@ export const useMousePointInteraction = ({ selectedPoint, onSelectPoint }) => {
   };
 
   const handleClick = event => {
-    const { instanceId: index, clientX, clientY } = event;
+    const { instanceId, clientX, clientY } = event;
     const downDistance = Math.sqrt(
       Math.pow(mouseDownRef.current[0] - clientX, 2) +
         Math.pow(mouseDownRef.current[1] - clientY, 2)
@@ -22,15 +22,13 @@ export const useMousePointInteraction = ({ selectedPoint, onSelectPoint }) => {
     }
 
     // toggle the point
-    if (selectedPoint !== null) {
-      if ( selectedPoint === index ){
-        onSelectPoint(null);
-      } else {
-        onSelectPoint(index);
-      }
-    } else {
-      onSelectPoint(index);
-    }
+    const { show, index } = selectedPoint;
+    onSelectPoint({
+      show: show
+        ? index === instanceId ? false : true
+        : true,
+      index: instanceId
+    });
   };
 
   return { handlePointerDown, handleClick };
