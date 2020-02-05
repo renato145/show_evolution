@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { scaleLinear, max, json } from 'd3';
+import { scaleLinear, max } from 'd3';
 import eaData from './data/ea_data.json';
 const THREE = require('three');
 

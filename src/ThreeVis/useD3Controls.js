@@ -37,7 +37,7 @@ export const useD3Controls = ({ fov, near, far, defaultCameraZoom }) => {
   useEffect(() => {
     threeZoom.transform(view, initialTransform);
     camera.position.set(0, 0, defaultCameraZoom);
-  }, [ camera ]);
+  }, [ camera, defaultCameraZoom, initialTransform, threeZoom, view ]);
 
   // Double click resets camera
   view.on('dblclick.zoom', () => {

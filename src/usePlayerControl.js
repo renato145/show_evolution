@@ -1,21 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faCaretLeft, faCaretRight, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons'
 
-export const PlayerControl = ({ n, setTime, time, speed }) => {
+export const usePlayerControl = ({ n, setTime, time, speed }) => {
   const [ play, setPlay ] = useState(false);
-  const [ playCb, setPlayCb ] = useState(null)
+  const [, setPlayCb ] = useState(null)
   const playRef = useRef();
   playRef.current = { n, time, speed, play };
   
-  const removeTimeout = () => {
-    if ( playCb ) {
-      clearTimeout(playCb);
-      setPlayCb(null);
-    }
-  };
+  const removeTimeout = useCallback(() => {
+    setPlayCb(playCb => {
+      if ( playCb ) {
+        clearTimeout(playCb);
+        return null;
+      }
+    });
+  }, []);
 
-  const playFunc = () => {
+  const playFunc = useCallback(() => {
     const { n, time, speed, play } = playRef.current;
     if ( (time < (n-1)) & play ) {
       setTime(time + 1);
@@ -24,9 +26,14 @@ export const PlayerControl = ({ n, setTime, time, speed }) => {
       setPlay(false);
       removeTimeout();
     }
-  };
+  }, [ removeTimeout, setTime ]);
 
-  const tooglePlay = () => {
+  const stopPlay = useCallback(() => {
+    setPlay(false);
+    removeTimeout();
+  }, [ removeTimeout ])
+
+  const tooglePlay = useCallback(() => {
     const { speed, play } = playRef.current;
     if ( !play ) {
       setPlay(true);
@@ -35,18 +42,9 @@ export const PlayerControl = ({ n, setTime, time, speed }) => {
       setPlay(false);
       removeTimeout();
     }
-  };
+  }, [ playFunc, removeTimeout ]);
 
-  // Playback keys
-  useEffect(() => {
-    document.addEventListener('keydown', e => {
-      if(e.code==='Space'){
-        tooglePlay();
-      }
-    });
-  }, [])
-
-  return (
+  const PlayerControl =  (
     <div className='controllers row justify-content-center'>
       <div className='button-container'>
         <button
@@ -87,4 +85,9 @@ export const PlayerControl = ({ n, setTime, time, speed }) => {
       </div>
     </div>
   );
+
+  return {
+    PlayerControl,
+    playerFuncs: { stopPlay, tooglePlay },
+  };
 };

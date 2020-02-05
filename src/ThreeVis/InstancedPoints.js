@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { useThree } from 'react-three-fiber';
 import { useSpring } from 'react-spring/three';
 import { useD3Controls } from './useD3Controls';

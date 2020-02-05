@@ -8,7 +8,7 @@ export const FileUpload = ({ className, setContent }) => {
       setContent(JSON.parse(fr.result));
     };
     return fr;
-  }, []);
+  }, [ setContent ]);
   return (
     <div className={className}>
       <input

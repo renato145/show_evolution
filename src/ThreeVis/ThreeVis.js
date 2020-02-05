@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { InstancedPoints } from './InstancedPoints';
-const THREE = require('three');
 
 // camera settings
 const fov = 30;

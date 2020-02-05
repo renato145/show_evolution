@@ -1,16 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useEAData } from './useEAData';
 import { ProgressBar, GeneralSlider } from './sliders';
 import { FileUpload } from './FileUpload';
 import './index.css';
-import { PlayerControl } from './PlayerControl';
+import { usePlayerControl } from './usePlayerControl';
+import { useKeyEvents } from './useKeyEvents';
 import { ThreeVis } from './ThreeVis/ThreeVis';
 
 // controls
 const defaultSpeed = 250;
 const defaultSphereSize = 1
+const speedStep = 25;
+const minSpeed = 25;
+const maxSpeed = 2500;
+const sphereSizeStep = 0.25;
 
 const App = () => {
   const [ fileData, setFileData ] = useState(null);
@@ -25,6 +30,8 @@ const App = () => {
     pointsData: eaData.pointsData[time],
     thisTime: eaData.times[time]
   }), [ time, eaData ]);
+  const { PlayerControl, playerFuncs } = usePlayerControl({ n, setTime, time, speed });
+  useKeyEvents({ playerFuncs, setTime, n, setSpeed, speedStep, minSpeed, maxSpeed })
 
   return (
     <div className='main-container'>
@@ -32,7 +39,7 @@ const App = () => {
         <div className='time-dialog'>
           {`Time: ${data.thisTime}/${maxTime}`}
         </div>
-        <ThreeVis {...{data, sphereSize, nPoints, speed}} />
+        <ThreeVis {...{data, sphereSize, nPoints, speed }} />
       </div>
       <div className='html-bottom-container'>
         <ProgressBar
@@ -42,13 +49,14 @@ const App = () => {
           label={`${time}/${n-1} gen`}
           onChange={(e,value) => setTime(value) }
         />
-        <PlayerControl {...{ n, setTime, time, speed }} />
+        { PlayerControl }
         <div className='row'>
           <GeneralSlider
             className={'col-4 offset-4'}
             min={25}
             max={2500}
-            step={25}
+            now={speed}
+            step={speedStep}
             valueLabelFormat={d => `${d} ms`}
             unit={'ms'}
             defaultValue={defaultSpeed}
@@ -58,7 +66,8 @@ const App = () => {
             className={'col-1 offset-1'}
             min={0.25}
             max={5}
-            step={0.25}
+            now={sphereSize}
+            step={sphereSizeStep}
             valueLabelFormat={d => `${d.toFixed(2)} sz`}
             defaultValue={defaultSphereSize}
             onChange={(e,value) => setSphereSize(value)}
@@ -66,7 +75,11 @@ const App = () => {
         </div>
         <FileUpload
           className='row file-upload offset-1'
-          setContent={setFileData}
+          setContent={d => {
+            setFileData(d);
+            setTime(0);
+            playerFuncs.stopPlay();
+          }}
         />
         <div className='git-info row justify-content-end'>
           <a href='https://github.com/renato145/show_evolution'>Source code</a>

@@ -76,7 +76,7 @@ export const ProgressBar = ({ min, max, now, label, onChange }) => {
   );
 };
 
-export const GeneralSlider = ({ min, max, step, defaultValue, valueLabelFormat, onChange, className }) => {
+export const GeneralSlider = ({ min, max, now, step, defaultValue, valueLabelFormat, onChange, className }) => {
   return (
     <BaseSlider
       className={className}
@@ -86,6 +86,7 @@ export const GeneralSlider = ({ min, max, step, defaultValue, valueLabelFormat, 
       aria-label='pretto slider'
       min={min}
       max={max}
+      value={now}
       step={step}
       onChange={onChange}
       track={false}

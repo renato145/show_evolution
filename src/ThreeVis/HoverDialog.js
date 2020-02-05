@@ -40,7 +40,7 @@ export const HoverDialog = ({ pointsAnim, selectedPoint, pointsData }) => {
       <Dom
         center={true}
         style={{
-          transform: `translate3d(-50%, ${ show ? 0 : '1000%' }, 0)`,
+          transform: `translate3d(-50%, ${ show ? 0 : '1000%' }, 0)`, // Dirty trick to hide the dialog outside of canvas view
         }}
         ref={hoverRef}
       >
