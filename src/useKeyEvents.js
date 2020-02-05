@@ -34,5 +34,5 @@ export const useKeyEvents = ({
         }
       }
     });
-  }, [ tooglePlay, setTime, n ]);
+  }, [ tooglePlay, setTime, n, setSpeed, speedStep, maxSpeed, minSpeed ]);
 };
