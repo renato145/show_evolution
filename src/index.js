@@ -30,8 +30,8 @@ const App = () => {
     pointsData: eaData.pointsData[time],
     thisTime: eaData.times[time]
   }), [ time, eaData ]);
-  const { PlayerControl, playerFuncs } = usePlayerControl({ n, setTime, time, speed });
-  useKeyEvents({ playerFuncs, setTime, n, setSpeed, speedStep, minSpeed, maxSpeed })
+  const { PlayerControl, stopPlay, tooglePlay } = usePlayerControl({ n, setTime, time, speed });
+  useKeyEvents({ tooglePlay, setTime, n, setSpeed, speedStep, minSpeed, maxSpeed })
 
   return (
     <div className='main-container'>
@@ -78,7 +78,7 @@ const App = () => {
           setContent={d => {
             setFileData(d);
             setTime(0);
-            playerFuncs.stopPlay();
+            stopPlay();
           }}
         />
         <div className='git-info row justify-content-end'>

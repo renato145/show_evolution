@@ -1,11 +1,8 @@
 import { useEffect } from "react";
 
-export const useKeyEvents = ({
-  playerFuncs: { tooglePlay },
-  setTime, n, setSpeed, speedStep, minSpeed, maxSpeed
-}) => {
+export const useKeyEvents = ({ tooglePlay, setTime, n, setSpeed, speedStep, minSpeed, maxSpeed }) => {
   useEffect(() => {
-    document.addEventListener('keydown', e => {
+    document.onkeydown = e => {
       if (e.target.tagName === 'BODY') {
         switch (e.code) {
           case 'Space':
@@ -29,10 +26,9 @@ export const useKeyEvents = ({
             break;
 
           default:
-            console.log(e.code);
             break;
         }
       }
-    });
+    };
   }, [ tooglePlay, setTime, n, setSpeed, speedStep, maxSpeed, minSpeed ]);
 };

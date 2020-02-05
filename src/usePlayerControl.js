@@ -86,8 +86,5 @@ export const usePlayerControl = ({ n, setTime, time, speed }) => {
     </div>
   );
 
-  return {
-    PlayerControl,
-    playerFuncs: { stopPlay, tooglePlay },
-  };
+  return { PlayerControl, stopPlay, tooglePlay };
 };
