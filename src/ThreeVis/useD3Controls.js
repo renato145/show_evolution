@@ -7,41 +7,41 @@ const toRadians = angle => (angle * (Math.PI/180));
 
 export const useD3Controls = ({ fov, near, far, defaultCameraZoom }) => {
   const { gl, camera, size } = useThree();
-  const { width, height } = size;
-
-  const zoomHandler = ({ x, y, k }) => {
-    camera.position.set(
-      -(x -  width/2) / k, // x
-       (y - height/2) / k, // y
-       getZFromScale(k)    // z
-    )
-  };
-
-  const getScaleFromZ = z => ( height / (2 * z * Math.tan(toRadians(fov/2))) );
-  const getZFromScale = scale => ( height / scale / (2 * Math.tan(toRadians(fov/2))) );
-
-  const threeZoom = zoom()
-    .scaleExtent([getScaleFromZ(far), getScaleFromZ(near)])
-    .on('zoom', () => {
-      zoomHandler(event.transform);
-    });
-  
-  // Add zoom listener
-  const view = select(gl.domElement);
-  view.call(threeZoom);
-  const initialScale = getScaleFromZ(defaultCameraZoom);
-  const initialTransform = zoomIdentity
-    .translate(width/2, height/2)
-    .scale(initialScale);    
 
   useEffect(() => {
-    threeZoom.transform(view, initialTransform);
-    camera.position.set(0, 0, defaultCameraZoom);
-  }, [ camera, defaultCameraZoom, initialTransform, threeZoom, view ]);
+    const { width, height } = size;
 
-  // Double click resets camera
-  view.on('dblclick.zoom', () => {
+    const zoomHandler = ({ x, y, k }) => {
+      camera.position.set(
+        -(x -  width/2) / k, // x
+        (y - height/2) / k, // y
+        getZFromScale(k)    // z
+      )
+    };
+
+    const getScaleFromZ = z => ( height / (2 * z * Math.tan(toRadians(fov/2))) );
+    const getZFromScale = scale => ( height / scale / (2 * Math.tan(toRadians(fov/2))) );
+
+    const threeZoom = zoom()
+      .scaleExtent([getScaleFromZ(far), getScaleFromZ(near)])
+      .on('zoom', () => {
+        zoomHandler(event.transform);
+      });
+    // Add zoom listener
+    const view = select(gl.domElement);
+    view.call(threeZoom);
+    const initialScale = getScaleFromZ(defaultCameraZoom);
+    const initialTransform = zoomIdentity
+      .translate(width/2, height/2)
+      .scale(initialScale);    
+
     threeZoom.transform(view, initialTransform);
     camera.position.set(0, 0, defaultCameraZoom);
-  });
+
+    // Double click resets camera
+    view.on('dblclick.zoom', () => {
+      threeZoom.transform(view, initialTransform);
+      camera.position.set(0, 0, defaultCameraZoom);
+    });
+  }, [ fov, near, far, defaultCameraZoom, gl, camera, size ]);
 };
