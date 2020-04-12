@@ -8,6 +8,7 @@ import './index.css';
 import { usePlayerControl } from './usePlayerControl';
 import { useKeyEvents } from './useKeyEvents';
 import { ThreeVis } from './ThreeVis/ThreeVis';
+import { Footer } from './Footer';
 
 // controls
 const defaultSpeed = 250;
@@ -81,10 +82,8 @@ const App = () => {
             stopPlay();
           }}
         />
-        <div className='git-info row justify-content-end'>
-          <a href='https://github.com/renato145/show_evolution'>Source code</a>
-        </div>
       </div>
+      <Footer url="show_evolution" />
     </div>
   )
 };
